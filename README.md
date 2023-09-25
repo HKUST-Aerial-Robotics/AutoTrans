@@ -74,3 +74,6 @@ We use [MINCO](https://github.com/ZJU-FAST-Lab/GCOPTER) as our trajectory repres
 We borrow the framework from [Fast-Planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) and [Ego-Planner-v2](https://github.com/ZJU-FAST-Lab/EGO-Planner-v2)
 
 Thanks to [rpg_mpc](https://github.com/uzh-rpg/rpg_mpc) for a good reference.
+
+## Maintaince
+For any technical issues, please contact Haojia Li(hlied@connect.ust.hk).
