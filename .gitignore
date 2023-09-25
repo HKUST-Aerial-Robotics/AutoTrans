@@ -1,0 +1,6 @@
+generating_corridor/*
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+quadrotor_payload_mpc_with_ext_force_codegen
+*.pyc

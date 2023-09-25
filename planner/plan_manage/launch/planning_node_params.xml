@@ -1,0 +1,158 @@
+<launch>
+  <arg name="map_size_x_"/>
+  <arg name="map_size_y_"/>
+  <arg name="map_size_z_"/>
+
+  <arg name="odometry_topic"/>
+  <arg name="payload_odometry_topic"/>
+  <arg name="camera_pose_topic"/>
+  <arg name="depth_topic"/>
+  <arg name="cloud_topic"/>
+
+  <arg name="cx"/>
+  <arg name="cy"/>
+  <arg name="fx"/>
+  <arg name="fy"/>
+
+  <arg name="max_vel"/>
+  <arg name="max_acc"/>
+  <arg name="planning_horizon"/>
+
+  <arg name="flight_type"/>
+
+  <!-- main node -->
+  <node pkg="payload_planner" name="payload_planner_node" type="payload_planner_node" output="screen">
+
+    <remap from="~odom_world" to="$(arg payload_odometry_topic)"/>
+    <remap from="~planning/trajectory" to = "planning/trajectory"/>
+    <remap from="~planning/start" to = "planning/start"/>
+    <remap from="~planning/finish" to = "planning/finish"/>
+    <remap from="~planning/data_display" to = "planning/data_display"/>
+
+    <remap from="~grid_map/odom" to="$(arg odometry_topic)"/>
+    <remap from="~grid_map/cloud" to="$(arg cloud_topic)"/>
+
+    <remap from="~grid_map/pose"   to = "$(arg camera_pose_topic)"/>
+    <remap from="~grid_map/depth" to = "$(arg depth_topic)"/>
+
+    <!-- Load trajectory optimization parameters -->
+    <rosparam file="$(find payload_planner)/config/planning_params.yaml"/>
+    <param name="~optimization/max_vel" value="$(arg max_vel)" type="double"/>
+    <param name="~optimization/max_acc" value="$(arg max_acc)" type="double"/>
+    <!-- kinodynamic path searching -->
+    <param name="search/max_vel" value="$(arg max_vel)" type="double"/>
+    <param name="search/max_acc" value="$(arg max_acc)" type="double"/>
+    
+    <!-- planner manager -->
+    <param name="manager/max_vel" value="$(arg max_vel)" type="double"/>
+    <param name="manager/max_acc" value="$(arg max_acc)" type="double"/>
+    <param name="manager/polyTraj_piece_length" value="2.0" type="double"/>
+    <param name="manager/planning_horizon" value="$(arg planning_horizon)" type="double"/>
+
+    <!-- planning fsm -->
+    <param name="fsm/flight_type" value="$(arg flight_type)" type="int"/>
+    <!-- the max time of replanning trajectory [s] -->
+    <param name="fsm/replan_trajectory_time" value="0.3" type="double"/>
+    <param name="fsm/thresh_replan_time" value="0.5" type="double"/>
+    <param name="fsm/thresh_no_replan_meter" value="2.0" type="double"/>
+    <param name="fsm/planning_horizon" value="$(arg planning_horizon)" type="double"/>
+    <!--always set to 1.5 times grater than sensing horizen-->
+    <param name="fsm/emergency_time" value="1.0" type="double"/>
+    <param name="fsm/realworld_experiment" value="false"/>
+    <param name="fsm/fail_safe" value="true"/>
+
+    <param name="fsm/waypoint_num" value="11" type="int"/>
+
+    <param name="fsm/waypoint0_x" value="0.0" type="double"/>
+    <param name="fsm/waypoint0_y" value="-1.2" type="double"/>
+    <param name="fsm/waypoint0_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint1_x" value="5.0" type="double"/>
+    <param name="fsm/waypoint1_y" value="-1.5" type="double"/>
+    <param name="fsm/waypoint1_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint2_x" value="5.0" type="double"/>
+    <param name="fsm/waypoint2_y" value="1.5" type="double"/>
+    <param name="fsm/waypoint2_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint3_x" value="0.0" type="double"/>
+    <param name="fsm/waypoint3_y" value="1.2" type="double"/>
+    <param name="fsm/waypoint3_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint4_x" value="-7.0" type="double"/>
+    <param name="fsm/waypoint4_y" value="1.5" type="double"/>
+    <param name="fsm/waypoint4_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint5_x" value="-7.0" type="double"/>
+    <param name="fsm/waypoint5_y" value="-1.5" type="double"/>
+    <param name="fsm/waypoint5_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint6_x" value="0.0" type="double"/>
+    <param name="fsm/waypoint6_y" value="-1.2" type="double"/>
+    <param name="fsm/waypoint6_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint7_x" value="5.0" type="double"/>
+    <param name="fsm/waypoint7_y" value="-1.5" type="double"/>
+    <param name="fsm/waypoint7_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint8_x" value="5.0" type="double"/>
+    <param name="fsm/waypoint8_y" value="1.5" type="double"/>
+    <param name="fsm/waypoint8_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint9_x" value="0.0" type="double"/>
+    <param name="fsm/waypoint9_y" value="1.2" type="double"/>
+    <param name="fsm/waypoint9_z" value="0.8" type="double"/>
+
+    <param name="fsm/waypoint10_x" value="-6.0" type="double"/>
+    <param name="fsm/waypoint10_y" value="1.2" type="double"/>
+    <param name="fsm/waypoint10_z" value="0.8" type="double"/>
+
+
+    <param name="grid_map/resolution" value="0.1" />
+    <param name="grid_map/map_size_x" value="$(arg map_size_x_)" />
+    <param name="grid_map/map_size_y" value="$(arg map_size_y_)" />
+    <param name="grid_map/map_size_z" value="$(arg map_size_z_)" />
+    <param name="grid_map/local_update_range_x" value="7" />
+    <param name="grid_map/local_update_range_y" value="7" />
+    <param name="grid_map/local_update_range_z" value="3.0" />
+    <param name="grid_map/obstacles_inflation" value="0.09" />
+    <param name="grid_map/local_map_margin" value="15"/>
+    <param name="grid_map/ground_height" value="-0.01"/>
+    <param name="grid_map/z_length" value="0.0"/>
+    <!-- camera parameter -->
+    <param name="grid_map/cx" value="$(arg cx)"/>
+    <param name="grid_map/cy" value="$(arg cy)"/>
+    <param name="grid_map/fx" value="$(arg fx)"/>
+    <param name="grid_map/fy" value="$(arg fy)"/>
+    <!-- depth filter -->
+    <param name="grid_map/use_depth_filter" value="true"/>
+    <param name="grid_map/depth_filter_tolerance" value="0.15"/>
+    <param name="grid_map/depth_filter_maxdist" value="5.0"/>
+    <param name="grid_map/depth_filter_mindist" value="0.2"/>
+    <param name="grid_map/depth_filter_margin" value="2"/>
+    <param name="grid_map/k_depth_scaling_factor" value="1000.0"/>
+    <param name="grid_map/skip_pixel" value="2"/>
+    <!-- local fusion -->
+    <param name="grid_map/p_hit" value="0.65"/>
+    <param name="grid_map/p_miss" value="0.35"/>
+    <param name="grid_map/p_min" value="0.12"/>
+    <param name="grid_map/p_max" value="0.90"/>
+    <param name="grid_map/p_occ" value="0.80"/>
+    <param name="grid_map/min_ray_length" value="0.1"/>
+    <param name="grid_map/max_ray_length" value="4.5"/>
+
+    <param name="grid_map/virtual_ceil_height" value="2.3"/>
+    <param name="grid_map/virtual_ceil_low" value="0.05"/>
+    <param name="grid_map/visualization_truncate_height" value="2.2"/>
+    <param name="grid_map/visualization_truncate_low" value="0.3"/>
+    <param name="grid_map/show_occ_time" value="false"/>
+    <param name="grid_map/pose_type" value="1"/>
+    <param name="grid_map/frame_id" value="world"/>
+
+    <!-- sdf map -->
+    <param name="grid_map/local_bound_inflate" value="0.0"/>
+    <param name="grid_map/show_esdf_time" value="false"/>
+    <param name="grid_map/esdf_slice_height" value="0.3"/>
+
+  </node>
+</launch>

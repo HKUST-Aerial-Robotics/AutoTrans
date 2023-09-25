@@ -1,0 +1,142 @@
+<launch>
+    <!-- size of map, change the size in x, y, z according to your application -->
+    <arg name="map_size_x" value="40.0"/>
+    <arg name="map_size_y" value="20.0"/>
+    <arg name="map_size_z" value=" 5.0"/>
+
+    <!-- topic of your odometry such as VIO or LIO -->
+    <arg name="odom_topic" value="visual_slam/odom" />
+    <arg name="payload_odom_topic" value="payload_odom" />
+
+    <!-- rviz -->
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find payload_planner)/launch/default.rviz" required="true" /> -->
+
+    <!-- map -->
+    <node pkg ="map_generator" name ="map_generator" type ="map_generator" output = "screen">    
+        <param name="map_generator/map/x_size"     value="20" />
+        <param name="map_generator/map/y_size"     value="15" />
+        <param name="map_generator/map/z_size"     value="3.0" />
+        <param name="map_generator/map/resolution" value="0.1"/>        
+        <param name="map_generator/map/seed" value="5"/>
+        <param name="map_generator/map/obs_num"    value="10"/>
+        <param name="map_generator/map/circle_num" value="10"/> 
+        
+        <param name="map_generator/obstacle/lower_rad" value="0.5"/>
+        <param name="map_generator/obstacle/upper_rad" value="0.5"/>
+        <param name="map_generator/obstacle/lower_hei" value="2.0"/>
+        <param name="map_generator/obstacle/upper_hei" value="3.0"/>        
+     
+        <param name="map_generator/obstacle/radius_l" value="0.3"/>        
+        <param name="map_generator/obstacle/radius_h" value="0.6"/>        
+        <param name="map_generator/obstacle/z_l" value="0.8"/>        
+        <param name="map_generator/obstacle/z_h" value="1.5"/>        
+        <param name="map_generator/obstacle/theta" value="0.2"/>        
+    
+        <param name="map_generator/pub_rate"   value="1.0"/>  
+        <param name="map_generator/obstacle/min_distance" value="1.2"/>
+        <param name="map_generator/obstacle/cylinder_num" value="0"/>
+            <param name="map_generator/obstacle/cylinder_0/x" value="-8.0"/>
+            <param name="map_generator/obstacle/cylinder_0/y" value="-1.0"/>
+            <param name="map_generator/obstacle/cylinder_0/z" value="0.0"/>
+            <param name="map_generator/obstacle/cylinder_0/radius" value="12.0"/>
+            <param name="map_generator/obstacle/cylinder_0/height" value="2.0"/>
+
+            <param name="map_generator/obstacle/cylinder_1/x" value="-8.0"/>
+            <param name="map_generator/obstacle/cylinder_1/y" value="1.0"/>
+            <param name="map_generator/obstacle/cylinder_1/z" value="0.0"/>
+            <param name="map_generator/obstacle/cylinder_1/radius" value="12.0"/>
+            <param name="map_generator/obstacle/cylinder_1/height" value="2.0"/>
+
+            <param name="map_generator/obstacle/cylinder_2/x" value="-6.0"/>
+            <param name="map_generator/obstacle/cylinder_2/y" value="-1.0"/>
+            <param name="map_generator/obstacle/cylinder_2/z" value="0.0"/>
+            <param name="map_generator/obstacle/cylinder_2/radius" value="12.0"/>
+            <param name="map_generator/obstacle/cylinder_2/height" value="2.0"/>
+
+            <param name="map_generator/obstacle/cylinder_3/x" value="-6.0"/>
+            <param name="map_generator/obstacle/cylinder_3/y" value="1.0"/>
+            <param name="map_generator/obstacle/cylinder_3/z" value="0.0"/>
+            <param name="map_generator/obstacle/cylinder_3/radius" value="12.0"/>
+            <param name="map_generator/obstacle/cylinder_3/height" value="2.0"/>
+
+        <param name="map_generator/obstacle/wall_num" value="6"/>
+            <param name="map_generator/obstacle/wall_0/x_l" value="-12.0"/>
+            <param name="map_generator/obstacle/wall_0/x_h" value="-5.0"/>
+            <param name="map_generator/obstacle/wall_0/y_l" value="-2.0"/>
+            <param name="map_generator/obstacle/wall_0/y_h" value="2.0"/>
+            <param name="map_generator/obstacle/wall_0/z_l" value="2.0"/>
+            <param name="map_generator/obstacle/wall_0/z_h" value="2.2"/>
+
+            <param name="map_generator/obstacle/wall_1/x_l" value="-12.0"/>
+            <param name="map_generator/obstacle/wall_1/x_h" value="-5.0"/>
+            <param name="map_generator/obstacle/wall_1/y_l" value="-2.0"/>
+            <param name="map_generator/obstacle/wall_1/y_h" value="2.0"/>
+            <param name="map_generator/obstacle/wall_1/z_l" value="-0.2"/>
+            <param name="map_generator/obstacle/wall_1/z_h" value="0.0"/>
+
+            <param name="map_generator/obstacle/wall_2/x_l" value="-12.0"/>
+            <param name="map_generator/obstacle/wall_2/x_h" value="-5.0"/>
+            <param name="map_generator/obstacle/wall_2/y_l" value="-2.0"/>
+            <param name="map_generator/obstacle/wall_2/y_h" value="-1.8"/>
+            <param name="map_generator/obstacle/wall_2/z_l" value="0.0"/>
+            <param name="map_generator/obstacle/wall_2/z_h" value="2.0"/>
+
+            <param name="map_generator/obstacle/wall_3/x_l" value="-12.0"/>
+            <param name="map_generator/obstacle/wall_3/x_h" value="-5.0"/>
+            <param name="map_generator/obstacle/wall_3/y_l" value="1.8"/>
+            <param name="map_generator/obstacle/wall_3/y_h" value="2.0"/>
+            <param name="map_generator/obstacle/wall_3/z_l" value="0.0"/>
+            <param name="map_generator/obstacle/wall_3/z_h" value="2.0"/>
+
+            <param name="map_generator/obstacle/wall_4/x_l" value="-9.6"/>
+            <param name="map_generator/obstacle/wall_4/x_h" value="-8.9"/>
+            <param name="map_generator/obstacle/wall_4/y_l" value="-0.5"/>
+            <param name="map_generator/obstacle/wall_4/y_h" value="2.0"/>
+            <param name="map_generator/obstacle/wall_4/z_l" value="0.0"/>
+            <param name="map_generator/obstacle/wall_4/z_h" value="2.0"/>
+
+            <param name="map_generator/obstacle/wall_5/x_l" value="-7.6"/>
+            <param name="map_generator/obstacle/wall_5/x_h" value="-6.9"/>
+            <param name="map_generator/obstacle/wall_5/y_l" value="-2.0"/>
+            <param name="map_generator/obstacle/wall_5/y_h" value="0.5"/>
+            <param name="map_generator/obstacle/wall_5/z_l" value="0.0"/>
+            <param name="map_generator/obstacle/wall_5/z_h" value="2.0"/>
+
+    </node>
+    <!-- <node pkg="mockamap" type="mockamap_node" name="mockamap_node" output="screen">
+      <param name="seed" type="int" value="100"/>
+      <param name="update_freq" type="double" value="1.0"/>
+      <param name="resolution" type="double" value="0.1"/>
+      <param name="x_length" type="int" value="20"/>
+      <param name="y_length" type="int" value="20"/>
+      <param name="z_length" type="int" value="3"/>
+      <param name="type" type="int" value="1"/>
+      <param name="complexity"    type="double" value="0.017"/>
+      <param name="fill"          type="double" value="0.19"/>
+      <param name="fractal"       type="int"    value="1"/>
+      <param name="attenuation"   type="double" value="0.1"/>
+      <remap from="/mock_map" to="/map_generator/global_cloud"/>
+    </node> -->
+
+    <!-- quadrotor with cable-suspended payload -->
+    <include file="$(find payload_planner)/launch/payload_run.launch">
+        <arg name="drone_id" value="0"/>
+
+        <arg name="init_x" value="-11.0"/>
+        <arg name="init_y" value="0.0"/>
+        <arg name="init_z" value="1.0"/>
+
+        <arg name="target_x" value="26.0"/>
+        <arg name="target_y" value="0.0"/>
+        <arg name="target_z" value="0.5"/>
+
+        <arg name="planning_horizon" value="20.0" />
+
+        <arg name="map_size_x"              value="$(arg map_size_x)"/>
+        <arg name="map_size_y"              value="$(arg map_size_y)"/>
+        <arg name="map_size_z"              value="$(arg map_size_z)"/>
+        <arg name="odom_topic"              value="$(arg odom_topic)"/>
+        <arg name="payload_odom_topic"              value="$(arg payload_odom_topic)"/>
+    </include>
+
+</launch>

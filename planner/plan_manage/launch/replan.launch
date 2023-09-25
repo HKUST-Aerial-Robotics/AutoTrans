@@ -1,0 +1,104 @@
+<launch>
+  <arg name="map_size_x" value="35.0"/>
+  <arg name="map_size_y" value="15.0"/>
+  <arg name="map_size_z" value=" 3.2"/>
+  <arg name="init_x" value="-15.0"/>
+  <arg name="init_y" value="-1.0"/>
+  <arg name="init_z" value="1.5"/>
+
+  <arg name="odom_topic" value="visual_slam/odom" />
+  <arg name="payload_odom_topic" value="payload_odom" />
+
+  <!-- map -->
+  <remap from="/traj_start_trigger" to="/move_base_simple/goal"/>
+  <node pkg ="map_generator" name ="random_forest" type ="random_forest" output = "screen">
+    <param name="map/x_size" value="25.0" />
+    <param name="map/y_size" value="10.0" />
+    <param name="map/z_size" value="3.0" />
+    <param name="map/resolution" value="0.1"/>
+    <param name="map/seed" value="0"/>
+    <param name="ObstacleShape/seed" value="0"/>
+
+    <param name="map/obs_num" value="70"/>
+
+    <param name="ObstacleShape/lower_rad" value="0.5"/>
+    <param name="ObstacleShape/upper_rad" value="0.5"/>
+    <param name="ObstacleShape/lower_hei" value="2.0"/>
+    <param name="ObstacleShape/upper_hei" value="3.0"/>
+
+    <param name="map/circle_num" value="0"/>
+    <param name="ObstacleShape/radius_l" value="1.0"/>
+    <param name="ObstacleShape/radius_h" value="1.2"/>
+    <param name="ObstacleShape/z_l" value="0.3"/>
+    <param name="ObstacleShape/z_h" value="3.0"/>
+    <param name="ObstacleShape/theta" value="0.5"/>
+
+    <param name="pub_rate" value="1.0"/>
+    <param name="min_distance" value="1.4"/>
+  </node>
+
+  <!-- main algorithm params -->
+  <include file="$(find payload_planner)/launch/planning_node_params.xml">
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z)"/>
+
+    <!-- camera pose: transform of camera frame in the world frame -->
+    <!-- depth topic: depth image, 640x480 by default -->
+    <!-- don't set cloud_topic if you already set these ones! -->
+    <arg name="odometry_topic" value="$(arg odom_topic)"/>
+    <arg name="payload_odometry_topic" value="$(arg payload_odom_topic)"/>
+    <arg name="camera_pose_topic" value="pcl_render_node/camera_pose"/>
+    <arg name="depth_topic" value="pcl_render_node/depth"/>
+    <!-- topic of point cloud measurement, such as from LIDAR  -->
+    <!-- don't set camera pose and depth, if you already set this one! -->
+    <arg name="cloud_topic" value="pcl_render_node/cloud"/>
+    <!-- intrinsic params of the depth camera -->
+    <arg name="cx" value="321.04638671875"/>
+    <arg name="cy" value="243.44969177246094"/>
+    <arg name="fx" value="387.229248046875"/>
+    <arg name="fy" value="387.229248046875"/>
+    <!-- maximum velocity and acceleration the drone will reach -->
+    <arg name="max_vel" value="2.5" />
+    <arg name="max_acc" value="3.0" />
+    <!--always set to 1.5 times grater than sensing horizen-->
+    <arg name="planning_horizon" value="7.5" />
+    <!-- 3: use global waypoints  -->
+    <!-- 2: Only use the first waypoint as the goal -->
+    <!-- 1: use 2D Nav Goal to select goal (Height is the first waypoint's height)-->
+    <arg name="flight_type" value="1" />
+
+  </include>
+
+  <node pkg="payload_mpc_controller" type="mpc_controller_node" name="mpc_controller_node" output="screen">
+    <rosparam command="load" file="$(find payload_mpc_controller)/config/mpc.yaml" />
+    <rosparam command="load" file="$(find payload_mpc_controller)/config/model.yaml" />
+    <remap from="~odom" to="$(arg odom_topic)"/>
+    <remap from="~drone_imu/data" to="imu"/>
+    <remap from="~cable_info/data" to="cable_info"/>
+    <remap from="~payload_odom" to="$(arg payload_odom_topic)"/>
+    <remap from="~load_imu/data" to="load_imu"/>
+    <remap from="/mavros/esc_telemetry" to="rpm" />
+
+    <remap from="~traj" to="planning/trajectory"/>
+    <remap from="/mavros/setpoint_raw/attitude" to="so3cmd"/>
+
+    <remap from="~start_trigger" to="/move_base_simple/goal"/>
+    <remap from="~cmd_trigger" to="/hummingbird/goal"/>
+
+  </node>
+
+  <!-- use simulator -->
+  <include file="$(find payload_planner)/launch/simulator.xml">
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z)"/>
+    <arg name="init_x" value="$(arg init_x)"/>
+    <arg name="init_y" value="$(arg init_y)"/>
+    <arg name="init_z" value="$(arg init_z)"/>
+    <arg name="odometry_topic" value="$(arg odom_topic)" />
+    <arg name="payload_odometry_topic" value="$(arg payload_odom_topic)" />
+  </include>
+
+
+</launch>

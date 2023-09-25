@@ -1,0 +1,33 @@
+optimization:
+  weight_obstacle     : 55000.0
+  weight_feasibility  : 400.0
+  weight_quad_feasibility    : 400.0
+  weight_sqrvariance  : 400.0
+  weight_time         : 500.0
+  constrain_points_perPiece: 32
+  
+  # system Config
+  payload_size         : 0.12
+  drone_size           : 0.18
+  L_length             : 0.66844507
+  sample_ball_distance : 0.1
+  safe_margin          : 0.2
+  grav                 : 9.795
+  min_thrust           : 0.5
+  max_thrust           : 40.0
+  max_theta            : 60.0
+  mass_payload         : 0.283
+  mass_quad            : 1.150
+
+#kinodynamic path searching
+search:
+  max_tau      : 0.6
+  init_max_tau : 0.8
+  w_time       : 10.0
+  horizon      : 5.0
+  lambda_heu   : 5.0
+  resolution_astar: 0.1
+  time_resolution : 0.8
+  margin       : 0.2
+  allocate_num : 500000  
+  check_num    : 8

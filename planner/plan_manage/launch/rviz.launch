@@ -1,0 +1,3 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find payload_planner)/launch/sim_vis.rviz" required="true" />
+</launch>

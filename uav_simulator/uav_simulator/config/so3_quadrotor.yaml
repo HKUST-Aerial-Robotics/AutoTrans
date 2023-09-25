@@ -1,0 +1,35 @@
+# init_x: -3
+# init_y: 0
+# init_z: -0.3
+# init_quadx: -3
+# init_quady: 0
+# init_quadz: -0.5
+init_yaw: 0.0
+
+noise_payload: 0.000
+noise_uav: 0.00
+noise_vel_payload: 0.0
+noise_vel_uav: 0.0
+noise_acc_uav: 0.0
+noise_acc_payload: 0.0
+noise_rpm: 0.0
+simulation_rate: 1000
+odom_rate: 400
+g: 9.795
+mass: 1.150
+Ixx: 2.64e-3
+Iyy: 2.64e-3
+Izz: 4.96e-3
+kf: 8.98132e-9
+prop_radius: 0.062
+arm_length: 0.26
+motor_time_constant: 0.03333
+max_rpm: 45000.0
+min_rpm: 1200.0
+
+payload_size: 0.1
+mass_load: 0.283
+l_length: 0.66844507
+
+kOmega: [3.0, 3.0, 3.0]
+kdOmega: [15.0, 15.0, 15.0]

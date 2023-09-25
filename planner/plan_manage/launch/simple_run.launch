@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find payload_planner)/launch/rviz.launch"/>
+    <include file="$(find payload_planner)/launch/replan.launch"/>
+</launch>
