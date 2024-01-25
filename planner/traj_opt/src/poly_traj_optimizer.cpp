@@ -352,17 +352,17 @@ namespace payload_planner
           gradViolaAc = beta2 * grada.transpose();
           gradViolaAt = alpha * grada.transpose() * jer;
           jerkOpt_.get_gdC().block<8, 3>(i * 8, 0) += omg * step * gradViolaAc;
-          gdT(i) += omg * (costa / K + step * gradViolaAt);
+          gdT(i) += omg * (costd / K + step * gradViolaAt);
 
           gradViolaJc = beta3 * gradj.transpose();
           gradViolaJt = alpha * gradj.transpose() * snap;
           jerkOpt_.get_gdC().block<8, 3>(i * 8, 0) += omg * step * gradViolaJc;
-          gdT(i) += omg * (costa / K + step * gradViolaJt);
+          gdT(i) += omg * (costd / K + step * gradViolaJt);
 
           gradViolaSc = beta4 * grads.transpose();
           gradViolaSt = alpha * grads.transpose() * crakle;
           jerkOpt_.get_gdC().block<8, 3>(i * 8, 0) += omg * step * gradViolaSc;
-          gdT(i) += omg * (costa / K + step * gradViolaSt);
+          gdT(i) += omg * (costd / K + step * gradViolaSt);
 
           costs(1) += omg * step * costd;
         }
