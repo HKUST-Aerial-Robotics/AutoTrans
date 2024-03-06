@@ -611,7 +611,7 @@ namespace payload_planner
 
     if (smoothedL1(violaTilt, 0.01, violaTiltPena, violaTiltPenaD))
     {
-      zdir_grad += Eigen::Vector3d(0, 0, -1) * violaTiltPenaD * 3 * (cos_theta_max_ - zdir(2)) * (cos_theta_max_ - zdir(2));
+      zdir_grad += Eigen::Vector3d(0, 0, -wei_quad_feas_) * violaTiltPenaD * 3 * (cos_theta_max_ - zdir(2)) * (cos_theta_max_ - zdir(2));
       costd += wei_quad_feas_ * violaTiltPena;
       ret = true;
     }
